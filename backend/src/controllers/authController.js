@@ -39,17 +39,18 @@ async function allUsers() {
     const user = await User.find(); // or findOne({ email: '...' })
     return user;
 }
-
 async function login (req, res) {
     try {
         const { email, password } = req.body;
 
+
         // Find user
-        const user = await User.find({ email });
-        
+        const user = await User.findOne({ email });
+       
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
+
 
         // Check password
         const isMatch = await bcrypt.compare(password, user.password);
@@ -57,18 +58,20 @@ async function login (req, res) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
+
         // Generate JWT
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: user._id},
             process.env.JWT_SECRET || 'your_jwt_secret',
             { expiresIn: '1h' }
         );
+
 
         res.json({
             message: 'Login successful',
             token,
             user: {
-                id: user.id,
+                id: user._id,
                 name: user.name,
                 email: user.email,
                 phoneNo: user.phoneNo
@@ -79,5 +82,9 @@ async function login (req, res) {
     }
 };
 
-module.exports = {allUsers, login, register, addSingleUser};
+
+
+
+
+module.exports = {allUsers, login, register};
 
