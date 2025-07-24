@@ -40,23 +40,6 @@ async function allUsers() {
     return user;
 }
 
-async function addSingleUser() {
-    try {
-        const newUser = new User({
-            id: 0,
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            phoneNo: '9876543210',
-            password: 'testtsfw'
-        });
-
-        const savedUser = await newUser.save();
-        console.log('✅ User saved:', savedUser);
-    } catch (error) {
-        console.error('❌ Error saving user:', error.message);
-    }
-}
-
 async function login (req, res) {
     try {
         const { email, password } = req.body;

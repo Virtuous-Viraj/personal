@@ -17,13 +17,7 @@ app.use(express.json());
 // app.use(cors());
 
 // Connect to database
-async function main() {
-    await connectDB();
-    const users = await authController.addSingleUser();
-    console.log("User", users);
-}
-
-main();
+connectDB();
 
 // Routes
 app.get('/', (req, res) => {
