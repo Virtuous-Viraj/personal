@@ -6,9 +6,8 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes= require('./routes/productRoutes');
 const billRoutes= require('./routes/billRoutes')
+require('dotenv').config()
 
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
