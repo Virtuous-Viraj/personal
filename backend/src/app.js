@@ -3,23 +3,35 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const authController = require('./controllers/authController')
 
 // Load environment variables
 dotenv.config();
-
-// Connect to database
-connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+// app.use(cors());
+
+// Connect to database
+async function main() {
+    await connectDB();
+    const users = await authController.addSingleUser();
+    console.log("User", users);
+}
+
+main();
 
 // Routes
 app.get('/', (req, res) => {
   res.send('API running');
 });
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 // Start server
 app.listen(PORT, () => {
