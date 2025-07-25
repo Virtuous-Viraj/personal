@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const authController = require('./controllers/authController')
+const cors = require("cors")
 
 // Load environment variables
 dotenv.config();
@@ -14,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 
 // Connect to database
 connectDB();

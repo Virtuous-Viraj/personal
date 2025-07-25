@@ -35,6 +35,7 @@ async function register (req, res) {
     }
 };
 
+
 async function allUsers() {
     const user = await User.find(); // or findOne({ email: '...' })
     return user;
@@ -45,7 +46,7 @@ async function login (req, res) {
         const { email, password } = req.body;
 
         // Find user
-        const user = await User.find({ email });
+        const user = await User.findOne({ email });
         
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
@@ -79,5 +80,5 @@ async function login (req, res) {
     }
 };
 
-module.exports = {allUsers, login, register, addSingleUser};
+module.exports = {allUsers, login, register};
 
