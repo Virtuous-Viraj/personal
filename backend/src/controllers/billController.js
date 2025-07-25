@@ -1,5 +1,8 @@
 const Bill = require('../models/Bill');
 const Product = require('../models/Product');
+const twilio = require('twilio');
+require('dotenv').config()
+
 
 const generateBill = async (req, res) => {
   try {
@@ -59,7 +62,7 @@ const generateBill = async (req, res) => {
   }
 };
 
-// Get All Bills for User
+
 const getUserBills = async (req, res) => {
   try {
     if (req.user.id !== req.params.user_id && !req.user.isAdmin) {
@@ -75,7 +78,6 @@ const getUserBills = async (req, res) => {
   }
 };
 
-// Get Single Bill
 const getSingleBill = async (req, res) => {
   try {
     const bill = await Bill.findOne({ bill_id: req.params.bill_id })
@@ -94,8 +96,44 @@ const getSingleBill = async (req, res) => {
   }
 };
 
+
+const sendBill = async (req, res) => {
+  try {
+    const bill = req.body;
+    const phoneNumber = bill.phone;
+     console.log(bill)
+    if (!phoneNumber || !bill.bill_id || !bill.total_amount) {
+      return res.status(400).json({ message: 'Missing required bill details' });
+    }
+
+    const message = `
+      Bill ID: ${bill.bill_id}
+      Date: ${bill.date}
+      Business: ${bill.business_name}
+      Address: ${bill.address}
+      Email: ${bill.email}
+      Items:
+      ${bill.items.map(item => `- ${item.name}: ${item.quantity} x ${item.price} = ${item.total}`).join('\n')}
+      Total Amount: ${bill.total_amount}
+    `;
+
+    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+    await client.messages.create({
+      from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
+      to: `whatsapp:${phoneNumber}`,
+      body: message
+    });
+
+    res.status(200).json({ message: 'Bill sent successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error sending bill', error: error.message });
+  }
+};
+
 module.exports = {
   generateBill,
   getUserBills,
-  getSingleBill
+  getSingleBill, 
+  sendBill
 };
