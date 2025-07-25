@@ -4,7 +4,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
-const authController = require('./controllers/authController')
+const productRoutes= require('./routes/productRoutes');
+const billRoutes= require('./routes/billRoutes')
 const cors = require("cors")
 
 // Load environment variables
@@ -27,6 +28,8 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/product', productRoutes)
+app.use('/api/bill',billRoutes)
 
 // Start server
 app.listen(PORT, () => {
