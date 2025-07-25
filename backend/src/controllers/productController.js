@@ -3,11 +3,8 @@ const Product = require('../models/Product');
 // Create Product
 const createProduct = async (req, res) => {
   try {
-    const { id, organization_id, name, price, cost_price, quantityLeftInStock} = req.body;
-    console.log(req.user, "req.usre+++++++++++++++++++++++++++")
-    const product = new Product({
-      
-      
+    const { name, price, cost_price, quantityLeftInStock} = req.body;
+    const product = new Product({  
       name,
       price,
       cost_price,

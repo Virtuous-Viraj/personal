@@ -12,14 +12,13 @@ const authenticateToken =   (req, res, next) => {
         return res.status(401).json({ message: 'Access token required' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret', async  (err, {userId}) => {
+    jwt.verify(token, process.env.JWT_SECRET, async  (err, {userId}) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid or expired token' });
         }
 
 
-        console.log(userId, "userID")
-                const objectId = new mongoose.Types.ObjectId(userId);
+        const objectId = new mongoose.Types.ObjectId(userId);
 
         const user = await User.findById(objectId)
 

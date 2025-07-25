@@ -63,7 +63,7 @@ async function login (req, res) {
         // Generate JWT
         const token = jwt.sign(
             { userId: user._id},
-            process.env.JWT_SECRET || 'your_jwt_secret',
+            process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
