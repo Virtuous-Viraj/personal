@@ -6,7 +6,8 @@ const {
   getAllProducts,
   getProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductNamesAndQuantities
 } = require('../controllers/productController');
 
 
@@ -16,6 +17,7 @@ router.get('/inventory', authenticateToken, getAllProducts);
 router.get('/inventory/:id', authenticateToken, getProduct);
 router.put('/inventory/:id', authenticateToken, updateProduct);
 router.delete('/inventory/:id', authenticateToken, deleteProduct);
+router.get('/inventorylist', authenticateToken, getProductNamesAndQuantities);
 
 
 
