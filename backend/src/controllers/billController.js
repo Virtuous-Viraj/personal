@@ -65,9 +65,6 @@ const generateBill = async (req, res) => {
 
 const getUserBills = async (req, res) => {
   try {
-    if (req.user.id !== req.params.user_id && !req.user.isAdmin) {
-      return res.status(403).json({ error: 'Access denied' });
-    }
     
     const bills = await Bill.find({ created_by: req.params.user_id })
       .populate('contents.product_id', 'name price cost_price')
@@ -86,11 +83,7 @@ const getSingleBill = async (req, res) => {
       
     if (!bill) return res.status(404).json({ error: 'Bill not found' });
     
-    if (bill.created_by._id.toString() !== req.user.id && !req.user.isAdmin) {
-      return res.status(403).json({ error: 'Access denied' });
-    }
-    
-    res.json(bill);
+    res.status(200).send(bill);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
