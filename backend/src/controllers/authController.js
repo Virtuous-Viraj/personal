@@ -37,7 +37,7 @@ async function register (req, res) {
 
 
 async function allUsers() {
-    const user = await User.find(); // or findOne({ email: '...' })
+    const user = await User.find();
     return user;
 }
 async function login (req, res) {
